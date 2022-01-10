@@ -6,6 +6,17 @@
 
 body {
   background-color: rgb(44, 44, 44);
+  color: #fff;
+}
+
+.container{
+  width: 1000px;
+  margin: 0 auto;
+}
+
+table, th, td {
+  border:1px solid #fff;
+  border-collapse: collapse;
 }
 
 h1 {

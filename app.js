@@ -1,6 +1,29 @@
+require('dotenv').config()
+// ==== USO DE MONGOOSE ====
+const mongoose = require('mongoose');
+const user = 'laucha_test'
+const password = '7oDKstZrJuBk7eUL'
+const dbName = 'veterinariadb'
+
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.tzfea.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`
+
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(()=> console.log('conectado a mongodb'))
+.catch(e => console.log('error de conexión', e))
+
+// ==== USO DE EXPRESS ====
 const express = require("express")
 const app = express()
 const PORT = process.env.PORT || 3000
+
+// ==== USO DE BODY-PARSER ====
+const bodyParser = require('body-parser')
+
+// Parse application /x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended:false}))
+
+// Parse application/json
+app.use(bodyParser.json())
 
 // ==== MOTOR DE PLANTILLAS ====
 
@@ -13,15 +36,9 @@ app.use(express.static(__dirname + "/public"))
 
 // ==== ROUTES ====
 
-app.get("/", (req, res) => {
-  // res.send("Respuesta desde directorio raiz en express") --> Antes de plantillas dinamicas
-  res.render("index", { titulo: "Mi titulo dinamico" })
-})
+app.use('/',require('./routes/RutasWeb'))
 
-app.get("/servicios", (req, res) => {
-  // res.send("Estas en la pagina de servicios")
-  res.render("servicios", { tituloServicios: "Mi pagina de servicios" })
-})
+app.use('/mascotas', require('./routes/Mascotas'))
 
 // MIDDLEWARE 404 --> Si no encuentra ninguna ruta se ejecuta el 404
 
