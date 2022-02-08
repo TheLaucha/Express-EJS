@@ -1,0 +1,78 @@
+<%- include('./template/cabecera', {tituloWeb: 'Detalle de mascota'}) %>
+
+<div class="container">
+  <h1>Detalle mascota</h1>
+
+  <% if (error) { %>
+  <p><%= mensaje %></p>
+  <a href="/mascotas">Volver a mascotas</a>
+  <% } %> <% if (!error) { %>
+
+  <form id="formularioEditar" data-id="<%= mascota.id %>">
+    <input type="text" id="nombreEdit" name="nombre" value="<%= mascota.nombre %>" />
+    <input type="text" id="descripcionEdit" name="descripcion" value="<%= mascota.descripcion %>" />
+    <button>Editar</button>
+  </form>
+
+  <a href="#" class="btnEliminar" data-id="<%= mascota.id %>"> Eliminar </a>
+
+  <% } %>
+</div>
+<%- include('./template/footer') %>
+
+<script>
+  const btnEliminar = document.querySelector(".btnEliminar")
+
+  btnEliminar.addEventListener("click", async () => {
+    console.log("se hizo click")
+    console.log(btnEliminar.dataset.id)
+
+    try {
+      const data = await fetch(`/mascotas/${btnEliminar.dataset.id}`, {
+        method: "delete",
+      })
+
+      const res = await data.json()
+
+      console.log({res})
+
+      if (res.estado) {
+        window.location.href = "/mascotas"
+      } else {
+        console.log(res)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  })
+
+  const formularioEditar = document.querySelector("#formularioEditar")
+  formularioEditar.addEventListener("submit", async (e) => {
+    e.preventDefault()
+    const nombreEdit = document.querySelector("#nombreEdit").value
+    const descripcionEdit = document.querySelector("#descripcionEdit").value
+    const id = formularioEditar.dataset.id
+
+    try {
+      const data = await fetch(`/mascotas/${id}`, {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nombre: nombreEdit,
+          descripcion: descripcionEdit,
+        }),
+      })
+      const res = await data.json()
+
+      if (res.estado) {
+        window.location.href = "/mascotas"
+      } else {
+        console.log(res)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  })
+</script>

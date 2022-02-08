@@ -1,4 +1,6 @@
 require('dotenv').config()
+const bodyParser = require('body-parser')
+
 // ==== USO DE MONGOOSE ====
 const mongoose = require('mongoose');
 const user = 'laucha_test'
@@ -8,8 +10,8 @@ const dbName = 'veterinariadb'
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.tzfea.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`
 
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-.then(()=> console.log('conectado a mongodb'))
-.catch(e => console.log('error de conexión', e))
+  .then(()=> console.log('conectado a mongodb'))
+  .catch(e => console.log('error de conexión', e))
 
 // ==== USO DE EXPRESS ====
 const express = require("express")
@@ -17,11 +19,9 @@ const app = express()
 const PORT = process.env.PORT || 3000
 
 // ==== USO DE BODY-PARSER ====
-const bodyParser = require('body-parser')
 
 // Parse application /x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended:false}))
-
 // Parse application/json
 app.use(bodyParser.json())
 

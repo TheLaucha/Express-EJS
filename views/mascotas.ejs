@@ -2,6 +2,10 @@
   <div class="container">
     <h1><%= listaMascotas %> </h1>
 
+    <a href="/mascotas/crear">
+      <button>Crear nueva mascota</button>
+    </a>
+
     <table style="width:100%">
       <tr>
         <th>#</th>
@@ -15,7 +19,11 @@
             <th scope="row"> <%= el.id %> </th>
             <td><%= el.nombre %></td>
             <td><%= el.descripcion %></td>
-            <td>Acciones</td>
+            <td>
+              <a href="mascotas/<%= el.id %> ">
+                Editar
+              </a>
+            </td>
           </tr>
         <% }) %>
       <% } %>
